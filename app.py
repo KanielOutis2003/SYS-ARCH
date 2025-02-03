@@ -20,8 +20,8 @@ def create_db():
     # Insert some sample users (only if the table is empty)
     cursor.execute('SELECT COUNT(*) FROM users')
     if cursor.fetchone()[0] == 0:  # If no users exist
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('admin', 'password123'))
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('user1', 'password456'))
+        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('admin', 'user'))
+        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('jecu', 'gwapo'))
 
     conn.commit()  # Commit changes
     conn.close()   # Close the connection

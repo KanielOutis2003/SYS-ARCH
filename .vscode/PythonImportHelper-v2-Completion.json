@@ -1,0 +1,123 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "redirect",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "url_for",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "sqlite3",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sqlite3",
+        "description": "sqlite3",
+        "detail": "sqlite3",
+        "documentation": {}
+    },
+    {
+        "label": "create_db",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_db():\n    conn = sqlite3.connect('users.db')  # Connect to the database (creates the file if it doesn't exist)\n    cursor = conn.cursor()\n    # Create the 'users' table if it doesn't exist\n    cursor.execute('''\n        CREATE TABLE IF NOT EXISTS users (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            username TEXT NOT NULL,\n            password TEXT NOT NULL\n        )",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def index():\n    return render_template('index.html')\n# Route to handle form submission\n@app.route('/submit', methods=['POST'])\ndef submit():\n    username = request.form['username']\n    password = request.form['password']\n    # Validate the user credentials\n    if validate_user(username, password):\n        return redirect(url_for('welcome'))",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "submit",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def submit():\n    username = request.form['username']\n    password = request.form['password']\n    # Validate the user credentials\n    if validate_user(username, password):\n        return redirect(url_for('welcome'))\n    else:\n        return \"Invalid credentials, please try again.\"\n# Function to validate the user credentials\ndef validate_user(username, password):",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "validate_user",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def validate_user(username, password):\n    conn = sqlite3.connect('users.db')\n    cursor = conn.cursor()\n    cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))\n    user = cursor.fetchone()  # If user exists and the password matches, user will not be None\n    conn.close()\n    return user is not None\n# Route to serve a welcome page upon successful login\n@app.route('/welcome')\ndef welcome():",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "welcome",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def welcome():\n    return \"Welcome to the dashboard!\"\nif __name__ == '__main__':\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\n# Function to create the database and the users table\ndef create_db():\n    conn = sqlite3.connect('users.db')  # Connect to the database (creates the file if it doesn't exist)\n    cursor = conn.cursor()\n    # Create the 'users' table if it doesn't exist\n    cursor.execute('''\n        CREATE TABLE IF NOT EXISTS users (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            username TEXT NOT NULL,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_by_username",
+        "kind": 2,
+        "importPath": "dbhelper",
+        "description": "dbhelper",
+        "peekOfCode": "def get_user_by_username(username):\n    \"\"\"Retrieve user from the database by username.\"\"\"\n    conn = sqlite3.connect('users.db')  # Connect to the database\n    cursor = conn.cursor()\n    cursor.execute('SELECT * FROM users WHERE username = ?', (username,))\n    user = cursor.fetchone()  # Fetch the first matching record\n    conn.close()  # Close the connection\n    return user\ndef validate_user(username, password):\n    \"\"\"Check if the provided username and password are correct.\"\"\"",
+        "detail": "dbhelper",
+        "documentation": {}
+    },
+    {
+        "label": "validate_user",
+        "kind": 2,
+        "importPath": "dbhelper",
+        "description": "dbhelper",
+        "peekOfCode": "def validate_user(username, password):\n    \"\"\"Check if the provided username and password are correct.\"\"\"\n    user = get_user_by_username(username)\n    if user and user[2] == password:  # user[2] is the password column\n        return True\n    return False",
+        "detail": "dbhelper",
+        "documentation": {}
+    }
+]
