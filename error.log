@@ -1,0 +1,68 @@
+2025-02-03 23:04:26,535 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-03 23:04:26,535 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-03 23:04:40,826 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-03 23:04:40,826 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-03 23:04:45,898 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:45] "GET / HTTP/1.1" 200 -
+2025-02-03 23:04:45,941 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:45] "[32mGET /static/CSS.jpg HTTP/1.1[0m" 302 -
+2025-02-03 23:04:45,968 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:45] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-03 23:04:45,983 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:45] "GET / HTTP/1.1" 200 -
+2025-02-03 23:04:46,041 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:46] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-03 23:04:46,058 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:46] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-03 23:04:53,799 - ERROR - Login error: no such table: students
+2025-02-03 23:04:53,801 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-03 23:04:53,806 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "GET / HTTP/1.1" 200 -
+2025-02-03 23:04:53,841 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-03 23:04:53,858 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-03 23:04:53,859 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "[32mGET /static/CSS.jpg HTTP/1.1[0m" 302 -
+2025-02-03 23:04:53,904 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-03 23:04:53,910 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:53] "GET / HTTP/1.1" 200 -
+2025-02-03 23:04:58,638 - ERROR - Login error: no such table: students
+2025-02-03 23:04:58,640 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-03 23:04:58,648 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "GET / HTTP/1.1" 200 -
+2025-02-03 23:04:58,686 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-03 23:04:58,703 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "[32mGET /static/CSS.jpg HTTP/1.1[0m" 302 -
+2025-02-03 23:04:58,705 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-03 23:04:58,713 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-03 23:04:58,748 - INFO - 127.0.0.1 - - [03/Feb/2025 23:04:58] "GET / HTTP/1.1" 200 -
+2025-02-03 23:05:04,169 - ERROR - Login error: no such table: students
+2025-02-03 23:05:04,170 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-03 23:05:04,178 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "GET / HTTP/1.1" 200 -
+2025-02-03 23:05:04,224 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-03 23:05:04,228 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "[32mGET /static/CSS.jpg HTTP/1.1[0m" 302 -
+2025-02-03 23:05:04,233 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-03 23:05:04,237 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-03 23:05:04,277 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:04] "GET / HTTP/1.1" 200 -
+2025-02-03 23:05:12,221 - ERROR - Login error: no such table: students
+2025-02-03 23:05:12,223 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-03 23:05:12,228 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "GET / HTTP/1.1" 200 -
+2025-02-03 23:05:12,268 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-03 23:05:12,280 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "[32mGET /static/CSS.jpg HTTP/1.1[0m" 302 -
+2025-02-03 23:05:12,283 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-03 23:05:12,294 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-03 23:05:12,329 - INFO - 127.0.0.1 - - [03/Feb/2025 23:05:12] "GET / HTTP/1.1" 200 -
+2025-02-05 22:43:28,648 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-05 22:43:28,649 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-05 22:43:28,651 - INFO -  * Restarting with stat
+2025-02-05 22:43:29,345 - WARNING -  * Debugger is active!
+2025-02-05 22:43:29,349 - INFO -  * Debugger PIN: 487-335-383
+2025-02-05 22:43:37,485 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "GET / HTTP/1.1" 200 -
+2025-02-05 22:43:37,659 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "GET /static/CSS.png HTTP/1.1" 200 -
+2025-02-05 22:43:37,677 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "GET /static/uc.jpg HTTP/1.1" 200 -
+2025-02-05 22:43:37,703 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "[32mGET /favicon.ico HTTP/1.1[0m" 302 -
+2025-02-05 22:43:37,717 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-05 22:43:37,731 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:37] "GET / HTTP/1.1" 200 -
+2025-02-05 22:43:43,852 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-05 22:43:43,859 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "GET / HTTP/1.1" 200 -
+2025-02-05 22:43:43,903 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "[36mGET /static/CSS.png HTTP/1.1[0m" 304 -
+2025-02-05 22:43:43,905 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-05 22:43:43,962 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "[32mGET /favicon.ico HTTP/1.1[0m" 302 -
+2025-02-05 22:43:43,968 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-02-05 22:43:43,974 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:43] "GET / HTTP/1.1" 200 -
+2025-02-05 22:43:48,489 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:48] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-05 22:43:48,534 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:48] "GET /admin/dashboard HTTP/1.1" 200 -
+2025-02-05 22:43:48,579 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:48] "[36mGET /static/uc.jpg HTTP/1.1[0m" 304 -
+2025-02-05 22:43:48,609 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:48] "[32mGET /favicon.ico HTTP/1.1[0m" 302 -
+2025-02-05 22:43:48,680 - INFO - 127.0.0.1 - - [05/Feb/2025 22:43:48] "GET /dashboard HTTP/1.1" 200 -
