@@ -121,6 +121,55 @@ def login():
         logging.error(f"Login error: {str(e)}")
         flash('An error occurred during login.', 'error')
         return redirect(url_for('index'))
+    
+
+@app.route('/lab-rules')
+def lab_rules():
+    return render_template('lab_rules.html')
+
+@app.route('/edit-record')
+def edit_record():
+    # Fetch the logged-in student's ID from the session
+    student_id = session.get('student_id')
+    if not student_id:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+    # Fetch the student's data from the database
+    student = Student.query.get(student_id)
+    if not student:
+        return "Student not found", 404
+
+    # Render the edit-record template with the student's data
+    return render_template('edit_record.html', student=student)
+
+# Route for handling form submission
+@app.route('/update-record', methods=['POST'])
+def update_record():
+    # Fetch the logged-in student's ID from the session
+    student_id = session.get('student_id')
+    if not student_id:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+    # Fetch the student's data from the database
+    student = Student.query.get(student_id)
+    if not student:
+        return "Student not found", 404
+
+    # Update the student's data with the form inputs
+    student.full_name = request.form.get('full_name')
+    student.email = request.form.get('email')
+    student.phone = request.form.get('phone')
+    student.address = request.form.get('address')
+    student.course = request.form.get('course')
+    student.year_level = request.form.get('year_level')
+
+    # Save the changes to the database
+    db.session.commit()
+
+    # Redirect back to the student dashboard
+    return redirect(url_for('student_dashboard'))
+
+
 
 @app.route('/dashboard')
 @login_required
@@ -133,13 +182,6 @@ def dashboard():
         flash('Error loading dashboard.', 'error')
         return redirect(url_for('index'))
 
-@app.route('/edit-record')
-@login_required
-def edit_record():
-    # TODO: Implement edit record functionality
-    flash('Edit record feature coming soon!')
-    return redirect(url_for('dashboard'))
-
 @app.route('/view-sessions')
 @login_required
 def view_sessions():
@@ -147,12 +189,50 @@ def view_sessions():
     flash('View sessions feature coming soon!')
     return redirect(url_for('dashboard'))
 
+
+# Route for the make-reservation page
 @app.route('/make-reservation')
-@login_required
 def make_reservation():
-    # TODO: Implement make reservation functionality
-    flash('Make reservation feature coming soon!')
-    return redirect(url_for('dashboard'))
+    return render_template('make_reservation.html')
+
+# Route for handling form submission
+@app.route('/submit-reservation', methods=['POST'])
+def submit_reservation():
+    # Fetch the logged-in student's ID and name from the session
+    student_id = session.get('student_id')
+    student_name = session.get('student_name')
+    if not student_id or not student_name:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+    # Retrieve form data
+    date = request.form.get('date')
+    time = request.form.get('time')
+    lab = request.form.get('lab')
+    purpose = request.form.get('purpose')
+
+    # Create a new reservation record
+    new_reservation = Reservation(
+        student_id=student_id,
+        student_name=student_name,
+        date=date,
+        time=time,
+        lab=lab,
+        purpose=purpose
+    )
+
+    # Save the reservation to the database
+    db.session.add(new_reservation)
+    db.session.commit()
+
+    # Redirect back to the student dashboard
+    return redirect(url_for('student_dashboard'))
+
+# Route to view all reservations
+@app.route('/view-reservations')
+def view_reservations():
+    # Fetch all reservations from the database
+    reservations = Reservation.query.all()
+    return render_template('view_reservations.html', reservations=reservations)
 
 @app.route('/logout', methods=['POST'])
 def logout():
