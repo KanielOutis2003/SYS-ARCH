@@ -172,9 +172,9 @@ def update_record():
         SET firstname = ?, lastname = ?, email = ?, course = ?, year_level = ?
         WHERE idno = ?
     ''', (
-        request.form.get('firstname'),
-        request.form.get('lastname'),
-        request.form.get('email'),
+        request.form.get('first_name'),  # Matching form field names
+        request.form.get('last_name'),
+        request.form.get('email'),  # Ensure this field is included in your form if it's being updated
         request.form.get('course'),
         request.form.get('year_level'),
         student_id  # Use student_id (idno) to identify the record
@@ -182,7 +182,8 @@ def update_record():
     db.commit()
 
     # Redirect back to the student dashboard
-    return redirect(url_for('student_dashboard'))  # Ensure correct indentation here
+    return redirect(url_for('dashboard'))
+
 
 
 
