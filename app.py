@@ -5,6 +5,11 @@ from functools import wraps
 import logging
 from datetime import datetime, timedelta
 
+db = sqlite3.connect('students.db')
+db = sqlite3.connect('users.db')
+db.execute('PRAGMA journal_mode=WAL')
+db.commit()
+cursor = db.cursor()
 # Configure logging
 logging.basicConfig(
     filename='error.log',
@@ -102,9 +107,10 @@ def login():
         
         if user and check_password_hash(user['password'], password):
             session.permanent = True
-            session['user_id'] = user['id']
+            session['user_id'] = user['id']  # Store the internal database ID in the session
             session['user_type'] = user['user_type']
             session['student_name'] = f"{user['firstname']} {user['lastname']}"
+            session['student_id'] = user['idno']  # Store the student ID number (idno) in the session
             session['last_activity'] = datetime.now().timestamp()
             flash('Successfully logged in!', 'success')
             
@@ -121,6 +127,7 @@ def login():
         logging.error(f"Login error: {str(e)}")
         flash('An error occurred during login.', 'error')
         return redirect(url_for('index'))
+
     
 
 @app.route('/lab-rules')
@@ -128,19 +135,22 @@ def lab_rules():
     return render_template('lab_rules.html')
 
 @app.route('/edit-record')
+@login_required
 def edit_record():
     # Fetch the logged-in student's ID from the session
     student_id = session.get('student_id')
     if not student_id:
         return redirect(url_for('login'))  # Redirect to login if not logged in
 
-    # Fetch the student's data from the database
-    student = Student.query.get(student_id)
+    # Fetch the student's data from the database using the student_id
+    db = get_db()
+    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()
     if not student:
         return "Student not found", 404
 
     # Render the edit-record template with the student's data
     return render_template('edit_record.html', student=student)
+
 
 # Route for handling form submission
 @app.route('/update-record', methods=['POST'])
@@ -151,23 +161,32 @@ def update_record():
         return redirect(url_for('login'))  # Redirect to login if not logged in
 
     # Fetch the student's data from the database
-    student = Student.query.get(student_id)
+    db = get_db()
+    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()
     if not student:
         return "Student not found", 404
 
     # Update the student's data with the form inputs
-    student.full_name = request.form.get('full_name')
-    student.email = request.form.get('email')
-    student.phone = request.form.get('phone')
-    student.address = request.form.get('address')
-    student.course = request.form.get('course')
-    student.year_level = request.form.get('year_level')
-
-    # Save the changes to the database
-    db.session.commit()
+    db.execute('''
+        UPDATE students
+        SET firstname = ?, lastname = ?, email = ?, course = ?, year_level = ?
+        WHERE idno = ?
+    ''', (
+        request.form.get('firstname'),
+        request.form.get('lastname'),
+        request.form.get('email'),
+        request.form.get('course'),
+        request.form.get('year_level'),
+        student_id  # Use student_id (idno) to identify the record
+    ))
+    db.commit()
 
     # Redirect back to the student dashboard
-    return redirect(url_for('student_dashboard'))
+    return redirect(url_for('student_dashboard'))  # Ensure correct indentation here
+
+
+
+
 
 
 
