@@ -98,6 +98,23 @@
         "documentation": {}
     },
     {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "secure_filename",
+        "importPath": "werkzeug.utils",
+        "description": "werkzeug.utils",
+        "isExtraImport": true,
+        "detail": "werkzeug.utils",
+        "documentation": {}
+    },
+    {
         "label": "datetime",
         "importPath": "datetime",
         "description": "datetime",
@@ -114,11 +131,20 @@
         "documentation": {}
     },
     {
+        "label": "allowed_file",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def allowed_file(filename):\n    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS\n# Function to get a database connection\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
         "label": "get_db",
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")\n        raise\ndef init_db():\n    with app.app_context():",
+        "peekOfCode": "def get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")\n        raise\n# Function to initialize the database\ndef init_db():",
         "detail": "app",
         "documentation": {}
     },
@@ -132,20 +158,20 @@
         "documentation": {}
     },
     {
-        "label": "index",
-        "kind": 2,
-        "importPath": "app",
-        "description": "app",
-        "peekOfCode": "def index():\n    return render_template('index.html')\n# Login required decorator with error handling\ndef login_required(f):\n    @wraps(f)\n    def decorated_function(*args, **kwargs):\n        try:\n            if 'user_id' not in session:\n                flash('Please login first.', 'error')\n                return redirect(url_for('index'))",
-        "detail": "app",
-        "documentation": {}
-    },
-    {
         "label": "login_required",
         "kind": 2,
         "importPath": "app",
         "description": "app",
         "peekOfCode": "def login_required(f):\n    @wraps(f)\n    def decorated_function(*args, **kwargs):\n        try:\n            if 'user_id' not in session:\n                flash('Please login first.', 'error')\n                return redirect(url_for('index'))\n            # Check if session is expired\n            if 'last_activity' in session:\n                last_activity = datetime.fromtimestamp(session['last_activity'])",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def index():\n    return render_template('index.html')\n# Route for handling login\n@app.route('/login', methods=['POST'])\ndef login():\n    try:\n        username = request.form['username']\n        password = request.form['password']\n        db = get_db()\n        user = db.execute('SELECT * FROM students WHERE username = ?', (username,)).fetchone()",
         "detail": "app",
         "documentation": {}
     },
@@ -163,7 +189,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def lab_rules():\n    return render_template('lab_rules.html')\n@app.route('/edit-record')\n@login_required\ndef edit_record():\n    # Fetch the logged-in student's ID from the session\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))  # Redirect to login if not logged in\n    # Fetch the student's data from the database using the student_id",
+        "peekOfCode": "def lab_rules():\n    return render_template('lab_rules.html')\n# Route for editing student record\n@app.route('/edit-record')\n@login_required\ndef edit_record():\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))  # Redirect to login if not logged in\n    db = get_db()",
         "detail": "app",
         "documentation": {}
     },
@@ -172,7 +198,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def edit_record():\n    # Fetch the logged-in student's ID from the session\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))  # Redirect to login if not logged in\n    # Fetch the student's data from the database using the student_id\n    db = get_db()\n    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()\n    if not student:\n        return \"Student not found\", 404",
+        "peekOfCode": "def edit_record():\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))  # Redirect to login if not logged in\n    db = get_db()\n    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()\n    if not student:\n        return \"Student not found\", 404\n    return render_template('edit_record.html', student=student)\n# Route for updating student record",
         "detail": "app",
         "documentation": {}
     },
@@ -181,7 +207,7 @@
         "kind": 2,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "def update_record():\n    # Fetch the logged-in student's ID from the session\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))  # Redirect to login if not logged in\n    # Fetch the student's data from the database\n    db = get_db()\n    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()\n    if not student:\n        return \"Student not found\", 404",
+        "peekOfCode": "def update_record():\n    student_id = session.get('student_id')\n    if not student_id:\n        return redirect(url_for('login'))\n    db = get_db()\n    student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()\n    if not student:\n        return \"Student not found\", 404\n    first_name = request.form.get('first_name')\n    last_name = request.form.get('last_name')",
         "detail": "app",
         "documentation": {}
     },
@@ -366,38 +392,11 @@
         "documentation": {}
     },
     {
-        "label": "db",
-        "kind": 5,
-        "importPath": "app",
-        "description": "app",
-        "peekOfCode": "db = sqlite3.connect('students.db')\ndb = sqlite3.connect('users.db')\ndb.execute('PRAGMA journal_mode=WAL')\ndb.commit()\ncursor = db.cursor()\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'",
-        "detail": "app",
-        "documentation": {}
-    },
-    {
-        "label": "db",
-        "kind": 5,
-        "importPath": "app",
-        "description": "app",
-        "peekOfCode": "db = sqlite3.connect('users.db')\ndb.execute('PRAGMA journal_mode=WAL')\ndb.commit()\ncursor = db.cursor()\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'\n)",
-        "detail": "app",
-        "documentation": {}
-    },
-    {
-        "label": "cursor",
-        "kind": 5,
-        "importPath": "app",
-        "description": "app",
-        "peekOfCode": "cursor = db.cursor()\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'\n)\napp = Flask(__name__, static_folder='static')\napp.secret_key = 'your_very_secure_secret_key_here'\napp.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes",
-        "detail": "app",
-        "documentation": {}
-    },
-    {
         "label": "app",
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "app = Flask(__name__, static_folder='static')\napp.secret_key = 'your_very_secure_secret_key_here'\napp.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")",
+        "peekOfCode": "app = Flask(__name__, static_folder='static')\napp.secret_key = 'your_very_secure_secret_key_here'\napp.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'\n)\n# Define the upload folder and allowed file extensions",
         "detail": "app",
         "documentation": {}
     },
@@ -406,7 +405,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "app.secret_key = 'your_very_secure_secret_key_here'\napp.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")\n        raise",
+        "peekOfCode": "app.secret_key = 'your_very_secure_secret_key_here'\napp.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'\n)\n# Define the upload folder and allowed file extensions\nUPLOAD_FOLDER = 'static/uploads/profile_pictures'",
         "detail": "app",
         "documentation": {}
     },
@@ -415,7 +414,34 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "app.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:\n        logging.error(f\"Database connection error: {str(e)}\")\n        raise\ndef init_db():",
+        "peekOfCode": "app.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes\n# Configure logging\nlogging.basicConfig(\n    filename='error.log',\n    level=logging.ERROR,\n    format='%(asctime)s - %(levelname)s - %(message)s'\n)\n# Define the upload folder and allowed file extensions\nUPLOAD_FOLDER = 'static/uploads/profile_pictures'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "UPLOAD_FOLDER",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "UPLOAD_FOLDER = 'static/uploads/profile_pictures'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\ndef allowed_file(filename):\n    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS\n# Function to get a database connection\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "ALLOWED_EXTENSIONS",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\ndef allowed_file(filename):\n    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS\n# Function to get a database connection\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app.config['UPLOAD_FOLDER']",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\ndef allowed_file(filename):\n    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS\n# Function to get a database connection\ndef get_db():\n    try:\n        db = sqlite3.connect('students.db')\n        db.row_factory = sqlite3.Row\n        return db\n    except Exception as e:",
         "detail": "app",
         "documentation": {}
     },

@@ -3,13 +3,15 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import logging
+import os
+from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-db = sqlite3.connect('students.db')
-db = sqlite3.connect('users.db')
-db.execute('PRAGMA journal_mode=WAL')
-db.commit()
-cursor = db.cursor()
+# Initialize Flask app
+app = Flask(__name__, static_folder='static')
+app.secret_key = 'your_very_secure_secret_key_here'
+app.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes
+
 # Configure logging
 logging.basicConfig(
     filename='error.log',
@@ -17,10 +19,15 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-app = Flask(__name__, static_folder='static')
-app.secret_key = 'your_very_secure_secret_key_here'
-app.permanent_session_lifetime = timedelta(minutes=30)  # Session expires after 30 minutes
+# Define the upload folder and allowed file extensions
+UPLOAD_FOLDER = 'static/uploads/profile_pictures'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Function to get a database connection
 def get_db():
     try:
         db = sqlite3.connect('students.db')
@@ -30,6 +37,7 @@ def get_db():
         logging.error(f"Database connection error: {str(e)}")
         raise
 
+# Function to initialize the database
 def init_db():
     with app.app_context():
         db = get_db()
@@ -46,7 +54,7 @@ def init_db():
             admin_exists = db.execute('SELECT id FROM students WHERE username = ?', ('admin',)).fetchone()
             if not admin_exists:
                 hashed_password = generate_password_hash('admin')
-                db.execute('''
+                db.execute(''' 
                     INSERT INTO students (
                         idno, lastname, firstname, middlename, 
                         course, year_level, email, username, password, user_type
@@ -56,22 +64,18 @@ def init_db():
                     'Admin',     # lastname
                     'System',    # firstname
                     '',         # middlename
-                    'ADMIN',    # course
-                    0,         # year_level
+                    'ADMIN',     # course
+                    0,           # year_level
                     'admin@example.com',  # email
-                    'admin',    # username
+                    'admin',     # username
                     hashed_password,  # password
-                    'admin'    # user_type
+                    'admin'      # user_type
                 ))
                 db.commit()
                 print("Admin user created successfully")
         except Exception as e:
             print(f"Error creating admin user: {str(e)}")
             logging.error(f"Error creating admin user: {str(e)}")
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 # Login required decorator with error handling
 def login_required(f):
@@ -96,6 +100,11 @@ def login_required(f):
             return redirect(url_for('index'))
     return decorated_function
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Route for handling login
 @app.route('/login', methods=['POST'])
 def login():
     try:
@@ -128,61 +137,43 @@ def login():
         flash('An error occurred during login.', 'error')
         return redirect(url_for('index'))
 
-    
-
+# Route for handling lab rules
 @app.route('/lab-rules')
 def lab_rules():
     return render_template('lab_rules.html')
 
+# Route for editing student record
 @app.route('/edit-record')
 @login_required
 def edit_record():
-    # Fetch the logged-in student's ID from the session
     student_id = session.get('student_id')
     if not student_id:
         return redirect(url_for('login'))  # Redirect to login if not logged in
 
-    # Fetch the student's data from the database using the student_id
     db = get_db()
     student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()
     if not student:
         return "Student not found", 404
 
-    # Render the edit-record template with the student's data
     return render_template('edit_record.html', student=student)
 
-
-# Route for handling form submission
+# Route for updating student record
 @app.route('/update-record', methods=['POST'])
 def update_record():
-    # Fetch the logged-in student's ID from the session
     student_id = session.get('student_id')
     if not student_id:
-        return redirect(url_for('login'))  # Redirect to login if not logged in
+        return redirect(url_for('login'))
 
-    # Fetch the student's data from the database
     db = get_db()
     student = db.execute('SELECT * FROM students WHERE idno = ?', (student_id,)).fetchone()
     if not student:
         return "Student not found", 404
 
-    # Update the student's data with the form inputs
-    db.execute('''
-        UPDATE students
-        SET firstname = ?, lastname = ?, email = ?, course = ?, year_level = ?
-        WHERE idno = ?
-    ''', (
-        request.form.get('first_name'),  # Matching form field names
-        request.form.get('last_name'),
-        request.form.get('email'),  # Ensure this field is included in your form if it's being updated
-        request.form.get('course'),
-        request.form.get('year_level'),
-        student_id  # Use student_id (idno) to identify the record
-    ))
-    db.commit()
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    email = request.form
 
-    # Redirect back to the student dashboard
-    return redirect(url_for('dashboard'))
+
 
 
 
